@@ -5,8 +5,8 @@
  if (!require(colorspace)) { install.packages("colorspace", repos = "https://cloud.r-project.org");}
  if (!require(rrBLUP)) { install.packages("rrBLUP", repos = "https://cloud.r-project.org");}
  ###
- cwd <- 'D:/temp/CERIS_EnviromicPrediction/CERIS_EP/'; #### Modify this for your own directory
- subfunction_file <- paste(cwd, 'Sub_functions_bio.r', sep = '');
+ cwd <- '/content/CERIS_PAG/'; #### Modify this for your own directory
+ subfunction_file <- paste(cwd, 'Sub_functions_PAG.r', sep = '');
  source(subfunction_file);
 }
 
