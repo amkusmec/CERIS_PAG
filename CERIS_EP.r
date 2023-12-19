@@ -1,61 +1,89 @@
-##########################                  Block 0                  ##########################
+### Block 1
+# system("git clone https://github.com/amkusmec/CERIS_PAG/")
 
-{
- ## install required packages
- if (!require(colorspace)) { install.packages("colorspace", repos = "https://cloud.r-project.org");}
- if (!require(rrBLUP)) { install.packages("rrBLUP", repos = "https://cloud.r-project.org");}
- ###
- cwd <- ''; #### Modify this for your own directory
- subfunction_file <- paste(cwd, 'Sub_functions_PAG.r', sep = '');
- source(subfunction_file);
+
+### Block 2
+if (!require(colorspace)) install.packages("colorspace")
+if (!require(rrBLUP)) install.packages("rrBLUP")
+
+
+### Don't copy this block
+### Block 3
+# cwd <- '/content/CERIS_PAG/' # This is the location of the files cloned into your Google Drive
+cwd <- "~/CERIS_PAG/" # For local testing
+source(paste0(cwd, 'Sub_functions_PAG.r'))
+r_files <- list.files(paste0(cwd, "R"), "*", full.names = TRUE)
+for (f in r_files) source(f)
+
+
+### Block 4
+experiment <- "Maize"
+trait <- "PH"
+
+
+### Block 5
+exp_dir <- paste(cwd, experiment, '/', sep = '')
+
+# Load the environment metadata file
+# Column `PlantingDate` should be formatted "YYYY-MM-DD" for proper parsing
+env_meta_file <- paste(exp_dir, 'Env_meta_table.txt', sep = '')
+env_meta_info_0 <- read.table(env_meta_file, header = T, sep = "\t", stringsAsFactors = F)
+
+# Load the phenotypic data
+exp_traits_file <- paste(exp_dir, 'Traits_record.txt', sep = '')
+exp_traits <- read.table(exp_traits_file, sep = "\t", header = T, stringsAsFactors = F, na.string = 'NA')
+
+
+### Block 6
+# Load the daily environmental data
+all_env_codes <- unique(exp_traits$env_code)
+env_cols <- rainbow_hcl(length(all_env_codes), c = 80, l = 60, start = 0, end = 300, fixup = TRUE, alpha = 0.75)
+
+envParas_file <- paste0(exp_dir, length(all_env_codes), 'Envs_envParas.txt')
+if ( !file.exists(envParas_file) ) {
+        envParas <- Compile_Envirome_Matrix(exp_dir, all_env_codes)
+} else {
+        envParas <- read.table(envParas_file, sep = "\t", header = T, stringsAsFactors = F, na.string = "NA")
+        if (!("DAP" %in% names(envParas))) {
+                params <- setdiff(names(envParas), c("env_code", "date"))
+                envParas <- split(envParas, envParas$env_code)
+                envParas <- lapply(envParas, function(df) {
+                        df$DAP <- 1:nrow(df)
+                        df[, c("env_code", "DAP", params)]
+                })
+                envParas <- do.call("rbind", envParas)
+        }
 }
 
-###############################################################################################
+# Names of the environmental parameters
+Paras <- names(envParas)[-(1:2)]
 
-##########################                  Block 1                  ##########################
 
-{
- experiment <- 'Sorghum'; ## Options: 1Sorghum; 2Idaho;  
- exp_dir <- paste(cwd, experiment, '/', sep = '')
- env_meta_file <- paste(exp_dir, 'Env_meta_table.txt', sep = ''); ## make sure the PlantingData formated as 'YYYY-MM-DD'
- env_meta_info_0 <- read.table(env_meta_file, header = T, sep = "\t", stringsAsFactors = F);
- 
- # if (experiment == 'Sorghum') { searching_days <- 122; trait <- 'FTgdd'};
- # if (experiment == 'Idaho') { searching_days <- 150; trait <- 'GY'};
- exp_traits_file <- paste(exp_dir, 'Traits_record.txt', sep = '');
- exp_traits <- read.table(exp_traits_file, sep = "\t", header = T, stringsAsFactors = F, na.string = 'NA');
- 
- all_env_codes <- unique(exp_traits$env_code);
- env_cols <- rainbow_hcl(length(all_env_codes), c = 80, l = 60, start = 0, end = 300, fixup = TRUE, alpha = 0.75);
- 
- envParas_file <- paste0(exp_dir, length(all_env_codes), 'Envs_envParas.txt')
- if ( !file.exists(envParas_file) ) {
-         envParas <- Compile_Envirome_Matrix(exp_dir, all_env_codes, envParas_file)
- } else {
-         envParas <- read.table(envParas_file, sep = "\t", header = T, stringsAsFactors = F, na.string = "NA")
- }
- 
- # Names of the environmental parameters
- Paras <- colnames(envParas[[1]])
-}
+### Block 7
+# Standardize the format of the trait data
+lInd <- which(colnames(exp_traits) == 'line_code') 
+eInd <- which(colnames(exp_traits) == 'env_code') 
+tInd <- which(colnames(exp_traits) == trait)
 
-###############################################################################################
-##########################                  Block 2                  ##########################
+exp_trait <- exp_traits[, c(lInd, eInd, tInd)] 
+colnames(exp_trait)[3] <- 'Yobs'
 
-{
- lInd <- which(colnames(exp_traits) == 'line_code'); eInd <- which(colnames(exp_traits) == 'env_code'); tInd <- which(colnames(exp_traits) == trait);
- exp_trait_dir <- paste(exp_dir, trait,  '/',  sep = ''); if (!dir.exists(exp_trait_dir))  { dir.create(exp_trait_dir, recursive= T)};
- exp_trait <- exp_traits[,c(lInd, eInd, tInd)]; 
+# Average across replicates within environments to reduce to one observation
+# per line per environment
+exp_trait <- aggregate(Yobs ~ line_code + env_code, exp_trait, mean, na.rm = TRUE)
+exp_trait <- exp_trait[!is.na(exp_trait$Yobs), ]
+
+line_codes <- unique(exp_trait$line_code)
+
+# Calculate the environmental mean phenotype
+env_mean_trait_0 <- aggregate(Yobs ~ env_code, exp_trait, mean, na.rm = TRUE)
+colnames(env_mean_trait_0)[2] <- 'meanY'
+env_mean_trait <- merge(env_mean_trait_0, env_meta_info_0)
+env_mean_trait <- env_mean_trait[order(env_mean_trait$meanY), ]
+
  
- colnames(exp_trait)[3] <- 'Yobs';
- exp_trait <- aggregate(Yobs ~  line_code + env_code, data = exp_trait, mean) ## To make sure only one phenotype record per each line in each environment
- exp_trait <- exp_trait[!is.na(exp_trait$Yobs),];
-
- line_codes <- unique(exp_trait$line_code); 
- env_mean_trait_0 <- na.omit(aggregate(x = exp_trait$Yobs, by = list(env_code = exp_trait$env_code), mean, na.rm = T));
- colnames(env_mean_trait_0)[2] <- 'meanY';
- env_mean_trait <- merge(env_mean_trait_0, env_meta_info_0)
- env_mean_trait <- env_mean_trait[order(env_mean_trait$meanY),];
+ 
+ 
 ### two figures and the correspondent output files will be saved in the trait directory;
  FW_Model(exp_trait, exp_trait_dir, trait, all_env_codes, env_mean_trait, env_meta_info_0);
 }
