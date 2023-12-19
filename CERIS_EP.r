@@ -5,7 +5,7 @@
  if (!require(colorspace)) { install.packages("colorspace", repos = "https://cloud.r-project.org");}
  if (!require(rrBLUP)) { install.packages("rrBLUP", repos = "https://cloud.r-project.org");}
  ###
- cwd <- '/content/CERIS_PAG/'; #### Modify this for your own directory
+ cwd <- ''; #### Modify this for your own directory
  subfunction_file <- paste(cwd, 'Sub_functions_PAG.r', sep = '');
  source(subfunction_file);
 }
@@ -15,24 +15,28 @@
 ##########################                  Block 1                  ##########################
 
 {
- experiment <- '1Sorghum'; ## Options: 1Sorghum; 2Idaho;  
+ experiment <- 'Sorghum'; ## Options: 1Sorghum; 2Idaho;  
  exp_dir <- paste(cwd, experiment, '/', sep = '')
  env_meta_file <- paste(exp_dir, 'Env_meta_table.txt', sep = ''); ## make sure the PlantingData formated as 'YYYY-MM-DD'
  env_meta_info_0 <- read.table(env_meta_file, header = T, sep = "\t", stringsAsFactors = F);
  
- if (experiment == '1Sorghum') { searching_days <- 122; trait <- 'FTgdd'};
- if (experiment == '2Idaho') { searching_days <- 150; trait <- 'GY'};
+ # if (experiment == 'Sorghum') { searching_days <- 122; trait <- 'FTgdd'};
+ # if (experiment == 'Idaho') { searching_days <- 150; trait <- 'GY'};
  exp_traits_file <- paste(exp_dir, 'Traits_record.txt', sep = '');
  exp_traits <- read.table(exp_traits_file, sep = "\t", header = T, stringsAsFactors = F, na.string = 'NA');
  
  all_env_codes <- unique(exp_traits$env_code);
  env_cols <- rainbow_hcl(length(all_env_codes), c = 80, l = 60, start = 0, end = 300, fixup = TRUE, alpha = 0.75);
  
- envParas_file <- paste(exp_dir, length(all_env_codes), 'Envs_envParas_DAP', searching_days, '.rds', sep = ''); 
- if ( !file.exists(envParas_file) ) { Compile_Envirome_Matrix(exp_dir, all_env_codes, envParas_file) };
- load(envParas_file);
+ envParas_file <- paste0(exp_dir, length(all_env_codes), 'Envs_envParas.txt')
+ if ( !file.exists(envParas_file) ) {
+         envParas <- Compile_Envirome_Matrix(exp_dir, all_env_codes, envParas_file)
+ } else {
+         envParas <- read.table(envParas_file, sep = "\t", header = T, stringsAsFactors = F, na.string = "NA")
+ }
  
- Paras <- colnames(envParas[[1]]) 
+ # Names of the environmental parameters
+ Paras <- colnames(envParas[[1]])
 }
 
 ###############################################################################################

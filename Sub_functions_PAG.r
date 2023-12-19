@@ -481,16 +481,21 @@ One_to_3_Prediction <- function(gFold, gIteration, SNPs, exp_trait, line_codes, 
 
 Compile_Envirome_Matrix <- function(exp_dir, all_env_codes, envParas_file) {
 
- env_dir <- paste(exp_dir, 'dailyEnv/', sep = '');
+ env_dir <- paste(exp_dir, 'dailyEnv/', sep = '')
  envParas <- list()
+ 
  for (e_i in 1:length(all_env_codes)) {
-  env_daily_file <- paste(env_dir, all_env_codes[e_i], '_daily.txt', sep = '');
-  env_daily <- read.table(env_daily_file, head = T, sep = "\t");
-  envParas[[e_i]] <- env_daily[,-1]
- } 
- names(envParas) <- all_env_codes;
- save(envParas, file = envParas_file)
+  env_daily_file <- paste0(env_dir, all_env_codes[e_i], '_daily.txt')
+  env_daily <- read.table(env_daily_file, head = T, sep = "\t", stringsAsFactors = F)
+  params <- setdiff(names(env_daily), "env_code")
+  env_daily$DAP <- 1:nrow(env_daily)
+  envParas[[e_i]] <- env_daily[, c("env_code", "DAP", params)]
+ }
+ 
+ envParas <- do.call("rbind", envParas)
+ return(envParas)
 }
+
 ##############
 Pred_rrBLUP <- function(Y_matrix, X_matrix, prd_idx, n ) {
 # Y_matrix <- lm_ab_matrix; X_matrix <- SNPs;
