@@ -6,6 +6,12 @@
 if (!require(colorspace)) install.packages("colorspace")
 if (!require(rrBLUP)) install.packages("rrBLUP")
 
+# Color scales for plotting
+col_wdw <- 25;
+col_palette <- diverge_hcl(col_wdw + 1, h = c(260, 0), c = 100, l = c(50, 90), power = 1)
+gray_alpha <- rgb(128, 128, 128, alpha = 35, maxColorValue = 255)
+poly_alpha <- rgb(238, 130, 238, alpha = 55.5, maxColorValue = 255)
+
 
 ### Don't copy this block
 ### Block 3
@@ -81,12 +87,39 @@ colnames(env_mean_trait_0)[2] <- 'meanY'
 env_mean_trait <- merge(env_mean_trait_0, env_meta_info_0)
 env_mean_trait <- env_mean_trait[order(env_mean_trait$meanY), ]
 
- 
- 
- 
-### two figures and the correspondent output files will be saved in the trait directory;
- FW_Model(exp_trait, exp_trait_dir, trait, all_env_codes, env_mean_trait, env_meta_info_0);
+# Reformat the phenotypic data
+env_codes <- env_mean_trait$env_code
+line_by_env_df <- data.frame(line_code = line_codes, stringsAsFactors = F)
+for (e_i in 1:nrow(env_mean_trait)) {
+        e <- env_codes[e_i]
+        e_trait <- subset(exp_trait, exp_trait$env_code == e)
+        nonNAs <- length(which(!is.na(e_trait[, 3])))
+        colnames(e_trait)[3] <- e
+        line_by_env_df <- merge(line_by_env_df, e_trait[, c(1, 3)], all.x = T)
 }
+
+
+### Block 8
+# Plot two different orderings of the environments
+layout(matrix(1:2, ncol = 2))
+
+# First, ordered by latitude, longitude, and planting date
+plot_geoOrder(env_mean_trait, env_meta_info_0, line_by_env_df, trait)
+mtext('A', side = 3, at = 1)
+
+# Second, ordered by the environmental mean phenotype
+plot_envMeans(env_mean_trait, line_by_env_df, trait)
+mtext('B', side = 3, at = min(env_mean_trait$meanY)) 
+
+
+### Block 9
+# FW and plots
+fw_res <- FW_Model(line_by_env_df, env_mean_trait)
+plot_FWResults(env_mean_trait, line_by_env_df, fw_res, trait)
+
+
+
+
 
 ###############################################################################################
 ##########################                  Block 3                  ##########################
