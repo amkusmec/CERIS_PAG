@@ -17,7 +17,6 @@ poly_alpha <- rgb(238, 130, 238, alpha = 55.5, maxColorValue = 255)
 ### Block 3
 # cwd <- '/content/CERIS_PAG/' # This is the location of the files cloned into your Google Drive
 cwd <- "~/CERIS_PAG/" # For local testing
-source(paste0(cwd, 'Sub_functions_PAG.r'))
 r_files <- list.files(paste0(cwd, "R"), "*", full.names = TRUE)
 for (f in r_files) source(f)
 
@@ -89,7 +88,7 @@ env_mean_trait <- env_mean_trait[order(env_mean_trait$meanY), ]
 
 # Reformat the phenotypic data
 env_codes <- env_mean_trait$env_code
-line_by_env_df <- data.frame(line_code = line_codes, stringsAsFactors = F)
+line_by_env_df <- data.frame(line_code = line_codes)
 for (e_i in 1:nrow(env_mean_trait)) {
         e <- env_codes[e_i]
         e_trait <- subset(exp_trait, exp_trait$env_code == e)
