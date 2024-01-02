@@ -1,6 +1,6 @@
 slopeIntercept <- function(exp_trait, env_mean_trait) {
   line_codes <- unique(exp_trait$line_code)
-  exp_trait_kPara <- merge(exp_trait, env_mean_trait[, c(1:2, 8)], 
+  exp_trait_kPara <- merge(exp_trait, env_mean_trait[, c("env_code", "meanY", "kPara")], 
                            by = "env_code")
   lm_ab_matrix <- matrix(ncol = 5, nrow = length(line_codes))
   

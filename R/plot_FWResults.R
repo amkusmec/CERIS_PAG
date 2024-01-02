@@ -21,7 +21,7 @@ plot_FWResults <- function(env_mean_trait, line_by_env_df, lm_ab_matrix, trait) 
   
   ### Plot of FW R^2
   par(mar = c(2.0, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = .7, family = "mono")
-  hist(as.numeric(lm_ab_matrix[, 5]), xlab = expression('F-W R^2'), 
+  hist(as.numeric(lm_ab_matrix[, 5]), xlab = expression(paste("FW", R^2)), 
        ylab = 'Count', main = '')
   mtext('B', side = 3, at = min(lm_ab_matrix[, 4])) 
 }

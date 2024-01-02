@@ -25,6 +25,8 @@ for (f in r_files) source(f)
 experiment <- "Maize"
 trait <- "PH"
 
+######## Need to automatically set max_days from organism and trait
+
 
 ### Block 5
 exp_dir <- paste(cwd, experiment, '/', sep = '')
@@ -117,62 +119,64 @@ fw_res <- FW_Model(line_by_env_df, env_mean_trait)
 plot_FWResults(env_mean_trait, line_by_env_df, fw_res, trait)
 
 
+### Block 10
+ceris_res <- CERIS(env_mean_trait, envParas, Paras)
+plot_CERIS(ceris_res, Paras, max(envParas$DAP))
 
 
+### Block 11
+# Identify the best window and parameter
+idxR <- match(paste0("R_", Paras), colnames(ceris_res))
+maxR <- arrayInd(which.max(abs(ceris_res[, idxR])), .dim = dim(ceris_res[, idxR]))
 
-###############################################################################################
-##########################                  Block 3                  ##########################
+kPara_Name <- Paras[maxR[1, 2]]
+maxR_dap1 <- ceris_res[maxR[1, 1], 2]
+maxR_dap2 <- ceris_res[maxR[1, 1], 3]
 
-{
- CERIS(env_mean_trait, envParas, searching_days, exp_trait_dir, trait, Paras, pop_cor_file, pop_corP_max_file)#; searching_daps, searching_daps);
+# Compile average covariate values for the best window and parameter
+env_mean_trait$kPara <- as.numeric(NA)
+for (e_i in 1:nrow(env_mean_trait)) {
+  e <- env_mean_trait$env_code[e_i]
+  env_mean_trait$kPara[e_i] <- mean(subset(envParas, env_code == e)
+                                    [maxR_dap1:maxR_dap2, kPara_Name])
 }
 
-###############################################################################################
+# Plot the best parameter vs. phenotype means
+plot_traitMean_kPara(env_mean_trait, trait, kPara_Name)
 
-##########################                  Block 4                  ##########################
-### For dataset with SNPs, such as 1Sorghum
-### Change the following three parameters for the window and environmental parameter with the strongest correlation
- if (experiment == '1Sorghum') { kPara_Name <- 'PTT'; maxR_dap1 <- 18; maxR_dap2 <- 43;};
- if (experiment == '2Idaho') { kPara_Name <- 'GDD'; maxR_dap1 <- 33; maxR_dap2 <- 74;};
+# Calculate slopes and intercepts using the best window and parameter
+res_para <- slopeIntercept(exp_trait, env_mean_trait)
 
-{
- kpara_append <- paste(kPara_Name, maxR_dap1, '_', maxR_dap2, sep = '')
- envMeanPara_file <- paste(exp_trait_dir, trait, '_', nrow(env_mean_trait), 'Env_', kpara_append, '.txt', sep = '');
- kPara_ind <-  match(kPara_Name, Paras); 
- meanY_kPara <- Plot_Trait_mean_kPara(env_mean_trait, envParas, maxR_dap1, maxR_dap2, trait, exp_trait_dir, env_cols, kPara_Name, kPara_ind, envMeanPara_file);  
+# Plot the reaction norms
+plot_slopeIntercept(merge(exp_trait, env_mean_trait, by = "env_code"), 
+                    res_para, trait, kPara_Name)
 
- obs_prd_file <- paste(exp_trait_dir, trait, '_', nrow(env_mean_trait), 'Env_LOO_by_Lines_', kpara_append, '.txt', sep = '');
- LOO_png_file <- paste(exp_trait_dir, trait, '_', nrow(env_mean_trait), 'Env_LOO_by_Lines_', kpara_append, '.png', sep = '');
- Slope_Intercept(meanY_kPara, exp_trait, exp_trait_dir, kpara_append, 1);
-# Plot_prediction_result(obs_prd_file, all_env_code, meanY_kPara, kPara_Name, LOO_png_file, env_cols, within_env_cor_file);
-}
-###############################################################################################
 
-##########################                  Block 5                  ##########################
-### This block works only when SNP matrix is avaiable, i.e., 1Sorghum in the demo
+### Block 12
+# JGRA
+# Cross-validation parameters:
+#  gFold      = number of cross-validation folds
+#  gIteration = number of times to perform cross-validation
+gFold <- 5
+gIteration <- 1
 
-{
- gFold <- 5;
- gIteration <- 1;
- SNPs_file <- paste(exp_dir, 'Genotype.txt', sep = '');
- SNPs <- read.table(SNPs_file, head = T, sep = "\t")
- One_to_3_Prediction(gFold, gIteration, SNPs, exp_trait, line_codes, meanY_kPara, kpara_append)
- One_to_4_Prediction(gFold, gIteration, SNPs, exp_trait, line_codes, meanY_kPara, kpara_append)
- Plot_crossvalidation_result(gFold, gIteration, all_env_codes, kpara_append)
-
+SNPs_file <- paste0(exp_dir, "Genotype.txt")
+if (file.exists(SNPs_file)) {
+  SNPs <- read.table(SNPs_file, header = TRUE, sep = "\t")
+  
+  res_1to3 <- oneTo3CV(gFold, gIteration, SNPs, res_para, env_mean_trait, exp_trait)
+  
+  
+  One_to_4_Prediction(gFold, gIteration, SNPs, exp_trait, line_codes, meanY_kPara, kpara_append)
+  Plot_crossvalidation_result(gFold, gIteration, all_env_codes, kpara_append)
+} else {
+  cat("Genomic prediction requires SNPs. Please choose a different dataset.")
 }
 
-###############################################################################################
 
+### Block 13
+# Enviromic prediction (USDA wheat only)
 
-##########################                  Block 6                  ##########################
-######### run this for 2Idaho only because the number of environments is large
-
-{
- eFold <- 10;
- eIteration <- 2;
- Enviromic_Prediction(eFold, eIteration, envParas, env_mean_trait_0, Paras, trait)
-}
-
-###############################################################################################
-
+eFold <- 10;
+eIteration <- 2;
+Enviromic_Prediction(eFold, eIteration, envParas, env_mean_trait_0, Paras, trait)
