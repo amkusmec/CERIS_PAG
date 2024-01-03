@@ -145,6 +145,6 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
            col = "cornflowerblue", type = "l", lwd = 1)
   }
   
-  par(op)
+  # par(op)
   layout(matrix(1))
 }

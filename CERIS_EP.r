@@ -22,8 +22,8 @@ for (f in r_files) source(f)
 
 
 ### Block 4
-experiment <- "Sorghum"
-trait <- "FTgdd"
+experiment <- "Maize"
+trait <- "FT"
 
 ######## Need to automatically set max_days from organism and trait
 
@@ -111,6 +111,8 @@ mtext('A', side = 3, at = 1)
 # Second, ordered by the environmental mean phenotype
 plot_envMeans(env_mean_trait, line_by_env_df, trait)
 mtext('B', side = 3, at = min(env_mean_trait$meanY)) 
+
+layout(matrix(1))
 
 
 ### Block 9

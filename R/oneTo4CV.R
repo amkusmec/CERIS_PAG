@@ -42,7 +42,7 @@ oneTo4CV <- function(gFold, gIteration, SNPs, env_mean_trait, exp_trait) {
                                  env_code = rep(env_mean_trait$env_code[e_i]), 
                                  Yprd = Y_prd)
         prd_result <- merge(prd_result, exp_trait)
-        prd_result$Rep <- rep(n, nrow(ab_prd))
+        prd_result$Rep <- rep(n, nrow(prd_result))
         
         if (e_i == 1 & n == 1 & bi == 1) { 
           PrefPred_df <- prd_result

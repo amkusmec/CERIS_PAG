@@ -22,6 +22,6 @@ plot_slopeIntercept <- function(exp_trait, res_para, trait, kPara_Name) {
        ylab = 'Count', main = '')
   mtext('B', side = 3, at = min(res_para[, 4]))
   
-  par(op)
+  # par(op)
   layout(matrix(1))
 }

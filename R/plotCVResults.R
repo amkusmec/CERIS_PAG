@@ -20,6 +20,6 @@ plotCVResults <- function(cv_res, all_env_codes) {
     legend("topleft", paste('1 to ', i + 2, ' prediction', sep = ''), bty = "n")
   }
   
-  par(op)
+  # par(op)
   layout(matrix(1))
 }

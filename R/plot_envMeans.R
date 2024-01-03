@@ -16,5 +16,5 @@ plot_envMeans <- function(env_mean_trait, line_by_env_df, trait) {
   points(env_mean_trait$meanY, env_mean_trait$meanY, col = "black", cex = .4, pch = 19)
   legend("topleft", as.vector(env_mean_trait$env_code), col = env_cols[match(as.vector(env_mean_trait$env_code), all_env_codes )], pch = 19, bty = "n", cex = .4)
   
-  par(op)
+  # par(op)
 }

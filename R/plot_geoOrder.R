@@ -23,5 +23,5 @@ plot_geoOrder <- function(env_mean_trait, env_meta_info_0, line_by_env_df, trait
   
   mtext(env_geo_order_df$env_code, side = 1, at = c(1:nrow(env_geo_order_df)), las = 2, line = 0.5, cex = 0.5 )
 
-  par(op)
+  # par(op)
 }

@@ -7,5 +7,5 @@ plot_traitMean_kPara <- function(env_mean_trait, trait, kPara_name) {
   r1 <- round(cor(env_mean_trait$meanY, env_mean_trait$kPara), 3)
   legend("bottom", paste0('r = ', r1), bty = "n")
   
-  par(op)
+  # par(op)
 }
