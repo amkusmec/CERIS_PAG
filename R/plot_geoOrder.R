@@ -5,7 +5,7 @@ plot_geoOrder <- function(env_mean_trait, env_meta_info_0, line_by_env_df, trait
   env_geo_order_df <- env_geo_order_df[order(env_geo_order_df$lat, env_geo_order_df$lon, env_geo_order_df$PlantingDate), ]
   env_geo_order <- match(env_mean_trait$env_code, env_geo_order_df$env_code)
   
-  par(mar = c(5.0, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = .7, cex.lab = .8, family = "mono");
+  op <- par(mar = c(5.0, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = .7, cex.lab = .8, family = "mono");
   plot(0, 0, col = "white", xlim = range(env_geo_order), ylim = range(exp_trait$Yobs, na.rm = T),  ylab = trait,  xlab = '', fg = "gray50", xaxt = "n");
   
   # Plot the data for each line
@@ -22,4 +22,6 @@ plot_geoOrder <- function(env_mean_trait, env_meta_info_0, line_by_env_df, trait
   points(c(1:nrow(env_geo_order_df)), env_geo_order_df$meanY, col = env_cols[match(as.vector(env_geo_order_df$env_code), all_env_codes )], cex = 0.8, pch = 19)
   
   mtext(env_geo_order_df$env_code, side = 1, at = c(1:nrow(env_geo_order_df)), las = 2, line = 0.5, cex = 0.5 )
+
+  par(op)
 }

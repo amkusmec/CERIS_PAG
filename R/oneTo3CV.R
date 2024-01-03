@@ -3,10 +3,6 @@ oneTo3CV <- function(gFold, gIteration, SNPs, lm_ab_matrix, env_mean_trait,
   line_codes <- lm_ab_matrix[, "line_code"]
   total_s <- length(line_codes)
   
-  snp_codes <- SNPs$line_codes
-  SNPs <- as.matrix(SNPs[, -1])
-  rownames(SNPs) <- snp_codes
-  
   # Create the CV folds
   block_idx <- floor(seq(1, total_s, length = gFold + 1))
   if (block_idx[length(block_idx)] < total_s) {
@@ -36,6 +32,7 @@ oneTo3CV <- function(gFold, gIteration, SNPs, lm_ab_matrix, env_mean_trait,
       # Predict slope and intercept
       ab_prd <- predRRBlup(lm_ab_matrix, SNPs, prd_idx, n)
       
+      # Predict the phenotype
       for (e_i in 1:nrow(env_mean_trait)) {
         Y_prd <- round(ab_prd$Intcp_para_prd + 
                          ab_prd$Slope_para_prd*env_mean_trait$kPara[e_i], digits = 3)

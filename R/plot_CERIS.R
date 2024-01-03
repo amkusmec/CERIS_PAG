@@ -58,7 +58,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     max_R <- pop_cor_6[which.max(pop_cor_6$R)[1], ]
     
     # Sets up the plot
-    par(mar = c(0.5, 1.0, 1, 0.5) , mgp = c(0.05, 0.1, 0), tck = -0.01, bty = "n")
+    op <- par(mar = c(0.5, 1.0, 1, 0.5) , mgp = c(0.05, 0.1, 0), tck = -0.01, bty = "n")
     plot(-50, -50, xlim = c(0, dap_x), ylim = c(0, dap_x), col = "white", 
          xlab = '', xaxt = "n", yaxt = "n", ylab = '', bty = "n")
     
@@ -115,7 +115,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
   x_labs <- c('Covariate', '')
   
   # Trace plot of correlation p-values
-  par(mar = c(2, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = 0.7)
+  op <- par(mar = c(2, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = 0.7)
   plot(-100, -100,  xlim = c(1, max_days*nParas) - 0,  
        ylim = range(corPs$P, na.rm = T) + c(0, 3), type = "l", bty = "l", 
        xlab = "", ylab = y_labs[1], xaxt = "n")
@@ -133,7 +133,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
   }
   
   # Trace plot of correlations
-  par(mar = c(1.0, 2.0, 0, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = 0.7)
+  op <- par(mar = c(1.0, 2.0, 0, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = 0.7)
   plot(-100, -100,  xlim = c(1, max_days*nParas) - 0,  ylim = range(-1, 1), 
        type = "l", xlab = '', ylab = y_labs[2], xaxt = "n", bty = "n")
   abline(v = 1:(nParas) * max_days,  lwd = 0.5, col = "grey")
@@ -144,4 +144,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     points(corPs_mid_xy$midXY + (k - 1)*max_days, corPs_mid_xy$R, 
            col = "cornflowerblue", type = "l", lwd = 1)
   }
+  
+  par(op)
+  layout(matrix(1))
 }

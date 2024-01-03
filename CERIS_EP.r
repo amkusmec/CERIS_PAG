@@ -22,8 +22,8 @@ for (f in r_files) source(f)
 
 
 ### Block 4
-experiment <- "Maize"
-trait <- "PH"
+experiment <- "Sorghum"
+trait <- "FTgdd"
 
 ######## Need to automatically set max_days from organism and trait
 
@@ -164,11 +164,24 @@ SNPs_file <- paste0(exp_dir, "Genotype.txt")
 if (file.exists(SNPs_file)) {
   SNPs <- read.table(SNPs_file, header = TRUE, sep = "\t")
   
+  # Check the orientation of the SNP table
+  if (!any(line_codes %in% SNPs[[1]])) {
+    snp_codes <- SNPs[[1]]
+    line_codes2 <- names(SNPs)[-1]
+    SNPs <- t(as.matrix(SNPs[, -1]))
+    dimnames(SNPs) <- list(line_codes2, snp_codes)
+    rm(line_codes2, snp_codes); gc()
+  } else {
+    line_codes2 <- SNPs[[1]]
+    SNPs <- as.matrix(SNPs[, -1])
+    rownames(SNPs) <- line_codes2
+    rm(line_codes2); gc()
+  }
+  
   res_1to3 <- oneTo3CV(gFold, gIteration, SNPs, res_para, env_mean_trait, exp_trait)
+  res_1to4 <- oneTo4CV(gFold, gIteration, SNPs, env_mean_trait, exp_trait)
   
-  
-  One_to_4_Prediction(gFold, gIteration, SNPs, exp_trait, line_codes, meanY_kPara, kpara_append)
-  Plot_crossvalidation_result(gFold, gIteration, all_env_codes, kpara_append)
+  plotCVResults(list(res_1to3, res_1to4), all_env_codes)
 } else {
   cat("Genomic prediction requires SNPs. Please choose a different dataset.")
 }
