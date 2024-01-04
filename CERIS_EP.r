@@ -25,8 +25,6 @@ for (f in r_files) source(f)
 experiment <- "Maize"
 trait <- "FT"
 
-######## Need to automatically set max_days from organism and trait
-
 
 ### Block 5
 exp_dir <- paste(cwd, experiment, '/', sep = '')
@@ -106,11 +104,11 @@ layout(matrix(1:2, ncol = 2))
 
 # First, ordered by latitude, longitude, and planting date
 plot_geoOrder(env_mean_trait, env_meta_info_0, line_by_env_df, trait)
-mtext('A', side = 3, at = 1)
+mtext('A', side = 3, at = 1, cex = 1.2)
 
 # Second, ordered by the environmental mean phenotype
 plot_envMeans(env_mean_trait, line_by_env_df, trait)
-mtext('B', side = 3, at = min(env_mean_trait$meanY)) 
+mtext('B', side = 3, at = min(env_mean_trait$meanY), cex = 1.2) 
 
 layout(matrix(1))
 

@@ -12,12 +12,14 @@ plotCVResults <- function(cv_res, all_env_codes) {
         family = "mono")
     plot(CVs$Yprd, CVs$Yobs, col = env_cols[match(CVs$env_code, all_env_codes)], 
          xlab = 'Predicted', ylab = 'Observed', pch = 19, xlim = xy_lim, 
-         ylim = xy_lim)
+         ylim = xy_lim, cex.lab = 1.2)
     abline(a = 0, b = 1, col = "black", lty = 2, lwd = 1.5)
     
     r1 <- round(cor(CVs$Yprd, CVs$Yobs, use = "complete.obs"), digits = 2)
-    legend("bottom", legend = substitute(paste(italic('r'), " = ", R1), list(R1 = r1)), bty = "n")
-    legend("topleft", paste('1 to ', i + 2, ' prediction', sep = ''), bty = "n")
+    legend("bottom", legend = substitute(paste(italic('r'), " = ", R1), list(R1 = r1)), 
+           bty = "n", cex = 1.2)
+    legend("topleft", paste('1 to ', i + 2, ' prediction', sep = ''), bty = "n", 
+           cex = 1.4)
   }
   
   # par(op)
