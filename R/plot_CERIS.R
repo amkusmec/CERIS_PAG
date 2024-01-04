@@ -84,7 +84,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     
     # Marks the maximum correlation
     arrows(max_R$Day_x + 4,  max_R$Day_y - 4,  max_R$Day_x,  max_R$Day_y, 
-           length = 0.05, angle = 15, lwd = 0.75, col = "black")
+           length = 0.1, angle = 15, lwd = 0.75, col = "black")
     # max_r_lab <- paste0( 'r = ', sprintf( "%.3f", max_R$R))
     # legend(max_R$Day_x - 4 , max_R$Day_y - 4 , 
     #        c(paste(max_R$Day_x, 'to', max_R$Day_y, 'DAP'), max_r_lab), 
@@ -95,15 +95,15 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     box_xs <- rep(dap_x - 15, 25)
     rect(box_xs - 0.5*2, box_ys - 0.5*2, box_xs + 0.5*2, box_ys + 0.5*2, 
          border = "NA", col = col_palette)
-    text(dap_x - 10 - 5, 52, 'r', cex = 1)
+    text(dap_x - 10 - 5, 52, 'r', cex = 1.25)
     
     r_lab_top <- 1; r_lab_mid <- 0; r_lab_bottom <- -1
-    text(dap_x - 10 + 3, 50, r_lab_top, cex = 0.7)
-    text(dap_x - 10 + 3, 27, r_lab_mid, cex = 0.7)
-    text(dap_x - 10 + 3, 1,  r_lab_bottom, cex = 0.7)
+    text(dap_x - 10 + 3, 50, r_lab_top, cex = 0.9)
+    text(dap_x - 10 + 3, 27, r_lab_mid, cex = 0.9)
+    text(dap_x - 10 + 3, 1,  r_lab_bottom, cex = 0.9)
     
     # Label the covariate
-    mtext(side = 1, Paras[k], line= -1,  cex = 0.75, bty = "n")
+    mtext(side = 1, Paras[k], line= -1,  cex = 1, bty = "n")
   }
   
   
@@ -115,7 +115,8 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
   x_labs <- c('Covariate', '')
   
   # Trace plot of correlation p-values
-  op <- par(mar = c(2, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = 0.7)
+  op <- par(mar = c(2, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, 
+            cex.axis = 1)
   plot(-100, -100,  xlim = c(1, max_days*nParas) - 0,  
        ylim = range(corPs$P, na.rm = T) + c(0, 3), type = "l", bty = "l", 
        xlab = "", ylab = y_labs[1], xaxt = "n")
@@ -129,11 +130,12 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     points(corPs_mid_xy$midXY + (k - 1)*max_days , corPs_mid_xy$P, 
            col = "cornflowerblue", type = "l", lwd = 1)
     text(seq(lbl_step, max_days, lbl_step) + (k - 1)*max_days, rep(0, 4), 
-         seq(lbl_step, max_days, lbl_step), cex = 0.75)
+         seq(lbl_step, max_days, lbl_step), cex = 1)
   }
   
   # Trace plot of correlations
-  op <- par(mar = c(1.0, 2.0, 0, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, cex.axis = 0.7)
+  op <- par(mar = c(1.0, 2.0, 0, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, 
+            cex.axis = 1)
   plot(-100, -100,  xlim = c(1, max_days*nParas) - 0,  ylim = range(-1, 1), 
        type = "l", xlab = '', ylab = y_labs[2], xaxt = "n", bty = "n")
   abline(v = 1:(nParas) * max_days,  lwd = 0.5, col = "grey")
