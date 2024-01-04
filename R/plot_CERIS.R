@@ -122,7 +122,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
        xlab = "", ylab = "", xaxt = "n", cex.lab = 1.3)
   axis(side = 1, at = 1:nParas * max_days - max_days/2 , labels = Paras)
   abline(v = 1:(nParas) * max_days,  lwd = 0.5, col = "grey")
-  mtext(y_labs[1], side = 3, line = -1.5, cex = 1, adj = 0)
+  mtext(y_labs[1], side = 3, line = -1.5, cex = 1, at = 10)
   
   lbl_step <- floor(max_days/4)
   
@@ -141,7 +141,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
        type = "l", xlab = '', ylab = "", xaxt = "n", bty = "n", cex.lab = 1.3)
   abline(v = 1:(nParas) * max_days,  lwd = 0.5, col = "grey")
   abline(h = 0, col = "black")
-  mtext(y_labs[2], side = 3, line = -1.5, cex = 1, adj = 0)
+  mtext(y_labs[2], side = 3, line = -1.5, cex = 1, at = 1)
   
   for (k in 1:nParas) {
     corPs_mid_xy <- subset(corPs, corPs$Para == Paras[k])
