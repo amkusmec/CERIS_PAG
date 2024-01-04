@@ -95,7 +95,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     box_xs <- rep(dap_x - 15, 25)
     rect(box_xs - 0.5*2, box_ys - 0.5*2, box_xs + 0.5*2, box_ys + 0.5*2, 
          border = "NA", col = col_palette)
-    text(dap_x - 10, 52, 'r', cex = 1.5)
+    text(dap_x - 14, 54, 'r', cex = 1.5)
     
     r_lab_top <- 1; r_lab_mid <- 0; r_lab_bottom <- -1
     text(dap_x - 10 + 3, 50, r_lab_top, cex = 0.9)
@@ -119,9 +119,10 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
             cex.axis = 1.3)
   plot(-100, -100,  xlim = c(1, max_days*nParas) - 0,  
        ylim = range(corPs$P, na.rm = T) + c(0, 3), type = "l", bty = "l", 
-       xlab = "", ylab = y_labs[1], xaxt = "n", cex.lab = 1.3)
+       xlab = "", ylab = "", xaxt = "n", cex.lab = 1.3)
   axis(side = 1, at = 1:nParas * max_days - max_days/2 , labels = Paras)
   abline(v = 1:(nParas) * max_days,  lwd = 0.5, col = "grey")
+  mtext(y_labs[1], side = 3, line = -1.5, cex = 1, adj = 0)
   
   lbl_step <- floor(max_days/4)
   
@@ -137,9 +138,10 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
   op <- par(mar = c(1.0, 2.0, 0, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, 
             cex.axis = 1.3)
   plot(-100, -100,  xlim = c(1, max_days*nParas) - 0,  ylim = range(-1, 1), 
-       type = "l", xlab = '', ylab = y_labs[2], xaxt = "n", bty = "n", cex.lab = 1.3)
+       type = "l", xlab = '', ylab = "", xaxt = "n", bty = "n", cex.lab = 1.3)
   abline(v = 1:(nParas) * max_days,  lwd = 0.5, col = "grey")
   abline(h = 0, col = "black")
+  mtext(y_labs[2], side = 3, line = -1.5, cex = 1, adj = 0)
   
   for (k in 1:nParas) {
     corPs_mid_xy <- subset(corPs, corPs$Para == Paras[k])
