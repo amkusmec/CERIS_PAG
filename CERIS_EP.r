@@ -53,7 +53,7 @@ if ( !file.exists(envParas_file) ) {
                 params <- setdiff(names(envParas), c("env_code", "date"))
                 envParas <- split(envParas, envParas$env_code)
                 envParas <- lapply(envParas, function(df) {
-                        df$DAP <- 1:nrow(df)
+                        df$DAP <- 0:(nrow(df) - 1)
                         df[, c("env_code", "DAP", params)]
                 })
                 envParas <- do.call("rbind", envParas)
@@ -142,7 +142,7 @@ for (e_i in 1:nrow(env_mean_trait)) {
 }
 
 # Plot the best parameter vs. phenotype means
-plot_traitMean_kPara(env_mean_trait, trait, kPara_Name)
+plot_traitMean_kPara(env_mean_trait, trait, kPara_Name, maxR_dap1, maxR_dap2)
 
 # Calculate slopes and intercepts using the best window and parameter
 res_para <- slopeIntercept(exp_trait, env_mean_trait)

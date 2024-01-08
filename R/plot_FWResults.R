@@ -25,7 +25,7 @@ plot_FWResults <- function(env_mean_trait, line_by_env_df, lm_ab_matrix, trait) 
             cex.axis = 1, family = "mono")
   hist(as.numeric(lm_ab_matrix[, 5]), xlab = expression(paste("FW ", R^2)), 
        ylab = 'Count', main = '', cex.lab = 1.2)
-  mtext('B', side = 3, at = min(lm_ab_matrix[, 4]), cex = 1.2)
+  mtext('B', side = 3, at = min(lm_ab_matrix[, 5]), cex = 1.2)
   
   # par(op)
   layout(matrix(1))

@@ -83,12 +83,14 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     mtext(c(1, dap_y), side = 2, at = c(1, dap_y), line = 0, cex = 0.6)
     
     # Marks the maximum correlation
-    arrows(max_R$Day_x + 4,  max_R$Day_y - 4,  max_R$Day_x,  max_R$Day_y, 
+    # arrows(max_R$Day_x + 4,  max_R$Day_y - 4,  max_R$Day_x,  max_R$Day_y, 
+    #        length = 0.1, angle = 15, lwd = 0.75, col = "black")
+    arrows(0.6*max_days,  max_days/3,  max_R$Day_x,  max_R$Day_y, 
            length = 0.1, angle = 15, lwd = 0.75, col = "black")
-    # max_r_lab <- paste0( 'r = ', sprintf( "%.3f", max_R$R))
-    # legend(max_R$Day_x - 4 , max_R$Day_y - 4 , 
-    #        c(paste(max_R$Day_x, 'to', max_R$Day_y, 'DAP'), max_r_lab), 
-    #        cex = 0.6, bty = "n")
+    max_r_lab <- paste0( 'r = ', sprintf( "%.3f", max_R$R))
+    legend(0.7*max_days, max_days/3,
+           c(paste(max_R$Day_x, 'to', max_R$Day_y, 'DAP'), max_r_lab),
+           cex = 0.6, bty = "n", xjust = 0.5, y.intersp = 0.5)
     
     # Construct the color legend
     box_ys <- seq(1, 50, by = 2)
