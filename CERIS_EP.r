@@ -22,8 +22,8 @@ for (f in r_files) source(f)
 
 
 ### Block 4
-experiment <- "Sorghum"
-trait <- "FTgdd"
+experiment <- "Maize"
+trait <- "PH"
 
 
 ### Block 5
