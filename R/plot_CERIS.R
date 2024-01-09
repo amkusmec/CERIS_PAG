@@ -90,7 +90,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     max_r_lab <- paste0( 'r = ', sprintf( "%.3f", max_R$R))
     legend(0.55*max_days, max_days/3,
            c(paste(max_R$Day_x, 'to', max_R$Day_y, 'DAP'), max_r_lab),
-           cex = 1, bty = "n", xjust = 0.5, y.intersp = 0.5)
+           cex = 1.2, bty = "n", xjust = 0.5, y.intersp = 1)
     
     # Construct the color legend
     box_ys <- seq(1, 50, by = 2)
