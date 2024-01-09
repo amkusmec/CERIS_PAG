@@ -1,4 +1,4 @@
-FW_Model <- function(line_by_env_df, env_mean_trait) {
+JRA_Model <- function(line_by_env_df, env_mean_trait) {
   ## line_code, a, a_meanEnv, b_mean, r2
   line_codes <- unique(line_by_env_df$line_code)
   lm_ab_matrix <- matrix(ncol = 5, nrow = length(line_codes))

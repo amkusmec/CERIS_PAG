@@ -1,7 +1,7 @@
-plot_FWResults <- function(env_mean_trait, line_by_env_df, lm_ab_matrix, trait) {
+plot_JRAResults <- function(env_mean_trait, line_by_env_df, lm_ab_matrix, trait) {
   layout(matrix(1:2, ncol = 2))
   
-  ### Plot of FW regression lines
+  ### Plot of JRA regression lines
   op <- par(mar = c(2.0, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, 
             cex.axis = 1, family = "mono");
   plot(0, 0, col = "white", xlim = range(env_mean_trait$meanY), 
@@ -20,10 +20,10 @@ plot_FWResults <- function(env_mean_trait, line_by_env_df, lm_ab_matrix, trait) 
   
   mtext('A', side = 3, at = min(env_mean_trait$meanY), cex = 1.2) 
   
-  ### Plot of FW R^2
+  ### Plot of JRA R^2
   op <- par(mar = c(2.0, 2.0, 1, 0.5) , mgp = c(1, 0.1, 0), tck = -0.01, 
             cex.axis = 1, family = "mono")
-  hist(as.numeric(lm_ab_matrix[, 5]), xlab = expression(paste("FW ", R^2)), 
+  hist(as.numeric(lm_ab_matrix[, 5]), xlab = expression(paste("JRA ", R^2)), 
        ylab = 'Count', main = '', cex.lab = 1.2)
   mtext('B', side = 3, at = min(lm_ab_matrix[, 5]), cex = 1.2)
   

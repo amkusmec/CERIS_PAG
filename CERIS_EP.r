@@ -22,8 +22,8 @@ for (f in r_files) source(f)
 
 
 ### Block 4
-experiment <- "Maize"
-trait <- "FT"
+experiment <- "Sorghum"
+trait <- "FTgdd"
 
 
 ### Block 5
@@ -114,9 +114,9 @@ layout(matrix(1))
 
 
 ### Block 9
-# FW and plots
-fw_res <- FW_Model(line_by_env_df, env_mean_trait)
-plot_FWResults(env_mean_trait, line_by_env_df, fw_res, trait)
+# JRA and plots
+jra_res <- JRA_Model(line_by_env_df, env_mean_trait)
+plot_JRAResults(env_mean_trait, line_by_env_df, jra_res, trait)
 
 
 ### Block 10
