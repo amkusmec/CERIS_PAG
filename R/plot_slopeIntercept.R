@@ -20,7 +20,7 @@ plot_slopeIntercept <- function(exp_trait, res_para, trait, kPara_Name) {
       cex.axis = 1, family = "mono")
   hist(as.numeric(res_para[, 5]), xlab = expression(paste("Parameter ", R^2)), 
        ylab = 'Count', main = '')
-  mtext('B', side = 3, at = min(res_para[, 4]), cex = 1.2)
+  mtext('B', side = 3, at = min(res_para[, 5]), cex = 1.2)
   
   # par(op)
   layout(matrix(1))

@@ -90,14 +90,14 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     max_r_lab <- paste0( 'r = ', sprintf( "%.3f", max_R$R))
     legend(0.55*max_days, max_days/3,
            c(paste(max_R$Day_x, 'to', max_R$Day_y, 'DAP'), max_r_lab),
-           cex = 1.2, bty = "n", xjust = 0.5, y.intersp = 1)
+           cex = 1, bty = "n", xjust = 0.5, y.intersp = 1)
     
     # Construct the color legend
     box_ys <- seq(1, 50, by = 2)
     box_xs <- rep(dap_x - 15, 25)
     rect(box_xs - 0.5*2, box_ys - 0.5*2, box_xs + 0.5*2, box_ys + 0.5*2, 
          border = "NA", col = col_palette)
-    text(dap_x - 14, 54, 'r', cex = 1.5)
+    text(dap_x - 14, 56, 'r', cex = 1.5)
     
     r_lab_top <- 1; r_lab_mid <- 0; r_lab_bottom <- -1
     text(dap_x - 10 + 3, 50, r_lab_top, cex = 0.9)
@@ -133,7 +133,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     points(corPs_mid_xy$midXY + (k - 1)*max_days , corPs_mid_xy$P, 
            col = "cornflowerblue", type = "l", lwd = 1)
     text(seq(lbl_step, max_days, lbl_step) + (k - 1)*max_days, rep(0, 4), 
-         seq(lbl_step, max_days, lbl_step), cex = 1.2)
+         seq(lbl_step, max_days, lbl_step), cex = 1)
   }
   
   # Trace plot of correlations
