@@ -105,7 +105,7 @@ plot_CERIS <- function(pop_cors_matrix, Paras, max_days) {
     text(dap_x - 10 + 3, 1,  r_lab_bottom, cex = 0.9)
     
     # Label the covariate
-    mtext(side = 1, Paras[k], line= -1,  cex = 1, bty = "n")
+    mtext(side = 1, Paras[k], line= -1,  cex = 0.75, bty = "n")
   }
   
   

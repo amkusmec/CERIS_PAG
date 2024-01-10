@@ -1,4 +1,4 @@
-oneTo2CV <- function(gFold, env_mean_trait, exp_trait) {
+oneTo2CV <- function(env_mean_trait, exp_trait) {
   
   for (e_i in 1:nrow(env_mean_trait)) {
     # Drop a single environment and recalculate the reaction norm parameters

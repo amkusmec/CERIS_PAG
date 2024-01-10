@@ -178,7 +178,7 @@ if (file.exists(SNPs_file)) {
     rm(line_codes2); gc()
   }
   
-  res_1to2 <- oneTo2CV(gFold, env_mean_trait, exp_trait)
+  res_1to2 <- oneTo2CV(env_mean_trait, exp_trait)
   res_1to3 <- oneTo3CV(gFold, gIteration, SNPs, res_para, env_mean_trait, exp_trait)
   res_1to4 <- oneTo4CV(gFold, gIteration, SNPs, env_mean_trait, exp_trait)
   
