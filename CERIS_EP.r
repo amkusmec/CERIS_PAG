@@ -22,8 +22,8 @@ for (f in r_files) source(f)
 
 
 ### Block 4
-experiment <- "Maize"
-trait <- "PH"
+experiment <- "Sorghum"
+trait <- "FTgdd"
 
 
 ### Block 5
@@ -178,10 +178,11 @@ if (file.exists(SNPs_file)) {
     rm(line_codes2); gc()
   }
   
+  res_1to2 <- oneTo2CV(gFold, env_mean_trait, exp_trait)
   res_1to3 <- oneTo3CV(gFold, gIteration, SNPs, res_para, env_mean_trait, exp_trait)
   res_1to4 <- oneTo4CV(gFold, gIteration, SNPs, env_mean_trait, exp_trait)
   
-  plotCVResults(list(res_1to3, res_1to4), all_env_codes)
+  plotCVResults(list(res_1to2, res_1to3, res_1to4), all_env_codes)
 } else {
   cat("Genomic prediction requires SNPs. Please choose a different dataset.")
 }
