@@ -2,6 +2,14 @@
 
 This repository hosts code and example datasets to demonstrate Critical Environmental Regressors through Informed Search (CERIS) and Joint Genomic Regression Analysis (JGRA). A CERIS-JGRA analysis is demonstrated in `CERIS_JGRA_demonstration.ipynb`. This file contains a worked example analysis of GDD to flowering time in sorghum. By clicking on the "Open in Colab" banner at the top, you can open an interactive notebook and explore different datasets.
 
+## Contact
+
+For questions, suggestions, or corrections, please contact:
+
+  - Jianming Yu (jmyu@iastate.edu)
+  - Xianran Li (xianran.li@wsu.edu)
+  - Aaron Kusmec (amkusmec@iastate.edu)
+
 ## Installation
 
 No installation is required to run the demonstration notebook. If you wish to run CERIS-JGRA on your own device, the following software is required:
